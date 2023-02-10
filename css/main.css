@@ -21,6 +21,10 @@
   margin-bottom: 8px;
 }
 
+#top-display {
+  min-height: 15px;
+}
+
 .btns-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
