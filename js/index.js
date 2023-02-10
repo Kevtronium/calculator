@@ -98,12 +98,12 @@ function getNewDisplayValue(char) {
   oldDisplay.bottom = document.querySelector('#bottom-display').textContent;
 
   if (isNumber(char)) {
+    newDisplay.top = oldDisplay.top;
     if (oldDisplay.bottom === '0') {
       newDisplay.bottom = `${char}`;
     } else if (displayHasOnlyOneNumber(oldDisplay)) {
       newDisplay.bottom = `${oldDisplay.bottom}${char}`;
     } else {
-      newDisplay.top = oldDisplay.top;
       if (lastInput !== '.' && !isNumber(lastInput)) {
         if (char !== oldDisplay.bottom) {
           newDisplay.bottom = char;
@@ -134,12 +134,18 @@ function getNewDisplayValue(char) {
     if (char === '=') {
       if (isValidExpression(oldDisplay, lastInput)) {
         let expr = getNumbersAndOperator(oldDisplay);
-        newDisplay.top = `${oldDisplay.top} ${oldDisplay.bottom} ${char}`;
-        newDisplay.bottom = operate(
-          expr.operator,
-          expr.num1,
-          expr.num2
-        ).toString();
+        if (expr.operator === '÷' && expr.num2 === 0) {
+          alert(`You can't divide by 0!`);
+          newDisplay.top = oldDisplay.top;
+          newDisplay.bottom = oldDisplay.bottom;
+        } else {
+          newDisplay.top = `${oldDisplay.top} ${oldDisplay.bottom} ${char}`;
+          newDisplay.bottom = operate(
+            expr.operator,
+            expr.num1,
+            expr.num2
+          ).toString();
+        }
       } else {
         newDisplay.top = oldDisplay.top;
         newDisplay.bottom = oldDisplay.bottom;
@@ -153,9 +159,15 @@ function getNewDisplayValue(char) {
         newDisplay.bottom = oldDisplay.bottom;
       } else if (isValidExpression(oldDisplay, lastInput)) {
         let expr = getNumbersAndOperator(oldDisplay);
-        const result = operate(expr.operator, expr.num1, expr.num2);
-        newDisplay.top = `${result} ${char}`;
-        newDisplay.bottom = `${result}`;
+        if (expr.operator === '÷' && expr.num2 === 0) {
+          alert(`You can't divide by 0!`);
+          newDisplay.top = oldDisplay.top;
+          newDisplay.bottom = oldDisplay.bottom;
+        } else {
+          const result = operate(expr.operator, expr.num1, expr.num2);
+          newDisplay.top = `${result} ${char}`;
+          newDisplay.bottom = `${result}`;
+        }
       } else if (lastInput === '=') {
         newDisplay.top = `${oldDisplay.bottom} ${char}`;
         newDisplay.bottom = oldDisplay.bottom;
