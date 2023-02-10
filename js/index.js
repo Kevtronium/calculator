@@ -47,8 +47,8 @@ function isNumber(char) {
     char === '-' ||
     char === '*' ||
     char === '÷' ||
-    char === 'clear' ||
-    char === 'delete'
+    char === 'CLEAR' ||
+    char === 'DELETE'
   ) {
     isNum = false;
   }
@@ -114,10 +114,10 @@ function getNewDisplayValue(char) {
         newDisplay.bottom = `${oldDisplay.bottom}${char}`;
       }
     }
-  } else if (char === 'clear') {
+  } else if (char === 'CLEAR') {
     newDisplay.top = '';
     newDisplay.bottom = '0';
-  } else if (char === 'delete') {
+  } else if (char === 'DELETE') {
     newDisplay.top = oldDisplay.top;
     newDisplay.bottom = oldDisplay.bottom.slice(0, length - 1);
   } else if (char === '.') {
