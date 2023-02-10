@@ -145,4 +145,25 @@ function getNewDisplayValue(char) {
   return newDisplay;
 }
 
-function initializeBtns() {}
+function updateUI(displayValue) {
+  const topDisplay = document.querySelector('#top-display');
+  const bottomDisplay = document.querySelector('#bottom-display');
+
+  topDisplay.textContent = displayValue.top;
+  bottomDisplay.textContent = displayValue.bottom;
+}
+
+function handleBtnClick(e) {
+  const newDisplayValue = getNewDisplayValue(e.target.textContent);
+  updateUI(newDisplayValue);
+}
+
+function initializeBtns() {
+  const btns = document.querySelectorAll('button');
+
+  for (const ele of btns) {
+    ele.addEventListener('click', handleBtnClick);
+  }
+}
+
+initializeBtns();
