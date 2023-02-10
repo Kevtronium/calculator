@@ -46,7 +46,9 @@ function isNumber(char) {
     char === '+' ||
     char === '-' ||
     char === '*' ||
-    char === '÷'
+    char === '÷' ||
+    char === 'clear' ||
+    char === 'delete'
   ) {
     isNum = false;
   }
@@ -66,8 +68,8 @@ function getNumbersAndOperator(oldDisplay) {
   const arrStr = convertDisplayToArray(oldDisplay);
 
   expr.operator = arrStr[1];
-  expr.num1 = parseInt(arrStr[0]);
-  expr.num2 = parseInt(arrStr[2]);
+  expr.num1 = parseFloat(arrStr[0]);
+  expr.num2 = parseFloat(arrStr[2]);
 
   return expr;
 }
@@ -102,7 +104,7 @@ function getNewDisplayValue(char) {
       newDisplay.bottom = `${oldDisplay.bottom}${char}`;
     } else {
       newDisplay.top = oldDisplay.top;
-      if (!isNumber(lastInput)) {
+      if (lastInput !== '.' && !isNumber(lastInput)) {
         if (char !== oldDisplay.bottom) {
           newDisplay.bottom = char;
         } else {
@@ -111,6 +113,22 @@ function getNewDisplayValue(char) {
       } else {
         newDisplay.bottom = `${oldDisplay.bottom}${char}`;
       }
+    }
+  } else if (char === 'clear') {
+    newDisplay.top = '';
+    newDisplay.bottom = '0';
+  } else if (char === 'delete') {
+    newDisplay.top = oldDisplay.top;
+    newDisplay.bottom = oldDisplay.bottom.slice(0, length - 1);
+  } else if (char === '.') {
+    newDisplay.top = oldDisplay.top;
+
+    if (!isNumber(lastInput)) {
+      newDisplay.bottom = `0${char}`;
+    } else if (!oldDisplay.bottom.includes('.')) {
+      newDisplay.bottom = `${oldDisplay.bottom}${char}`;
+    } else {
+      newDisplay.bottom = oldDisplay.bottom;
     }
   } else {
     if (char === '=') {
@@ -138,6 +156,12 @@ function getNewDisplayValue(char) {
         const result = operate(expr.operator, expr.num1, expr.num2);
         newDisplay.top = `${result} ${char}`;
         newDisplay.bottom = `${result}`;
+      } else if (lastInput === '=') {
+        newDisplay.top = `${oldDisplay.bottom} ${char}`;
+        newDisplay.bottom = oldDisplay.bottom;
+      } else {
+        newDisplay.top = oldDisplay.top;
+        newDisplay.bottom = oldDisplay.bottom;
       }
     }
   }

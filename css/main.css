@@ -21,7 +21,8 @@
   margin-bottom: 8px;
 }
 
-#top-display {
+#top-display,
+#bottom-display {
   min-height: 15px;
 }
 
